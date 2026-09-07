@@ -53,7 +53,7 @@ The selected worksheet must have these exact headers in its first row:
 | `Mobile Number` | Mobile Number field |
 | `Marks Obtained` | Total score and question-wise allocation |
 
-`Marks Obtained` must be a whole number from 0 to 25 or `Ab`. [Example template] (https://docs.google.com/spreadsheets/d/1g16tx5055atuTEP42zXqHH92BK4apdje/edit?usp=sharing&ouid=105329508417402305211&rtpof=true&sd=true)
+`Marks Obtained` must be a whole number from 0 to 25 or `Ab`. [Example template](https://docs.google.com/spreadsheets/d/1g16tx5055atuTEP42zXqHH92BK4apdje/edit?usp=sharing&ouid=105329508417402305211&rtpof=true&sd=true)
 
 ### Word template
 
@@ -67,7 +67,7 @@ The template must contain these labels exactly once:
 | `Marks obtained:` | `Marks Obtained` |
 | `Signature of the student with date` | Typed signature and examination date are inserted above this label |
 
-The question-allocation feature expects a table headed `Q. No.` and `Marks Awarded`, with Question 1 parts (`1.a)` through `1.g)`) and Questions 2 through 7. [Example template] (https://docs.google.com/document/d/1MEd09kKXdDmPIVZjeK-MCoThG1fBDorq/edit?usp=sharing&ouid=105329508417402305211&rtpof=true&sd=true)
+The question-allocation feature expects a table headed `Q. No.` and `Marks Awarded`, with Question 1 parts (`1.a)` through `1.g)`) and Questions 2 through 7. [Example template](https://docs.google.com/document/d/1MEd09kKXdDmPIVZjeK-MCoThG1fBDorq/edit?usp=sharing&ouid=105329508417402305211&rtpof=true&sd=true)
 
 ## Command-line options (optional)
 
