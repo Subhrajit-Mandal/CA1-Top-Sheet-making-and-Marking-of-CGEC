@@ -25,6 +25,21 @@ Install the Python dependencies:
 py -m pip install -r requirements.txt
 ```
 
+## Quick start
+
+After placing or cloning this project on a Windows computer, open PowerShell in the project folder and run:
+
+```powershell
+py .\generate_top_sheets.py
+```
+
+Two standard Windows file pickers will open in sequence:
+
+1. Choose the student Excel workbook (`.xlsx`).
+2. Choose the Word top-sheet template (`.docx`).
+
+The generated files are written to `output\docx` and `output\pdf`. Input filenames do not need to match any predefined names.
+
 ## Input requirements
 
 ### Excel workbook
@@ -54,9 +69,9 @@ The template must contain these labels exactly once:
 
 The question-allocation feature expects a table headed `Q. No.` and `Marks Awarded`, with Question 1 parts (`1.a)` through `1.g)`) and Questions 2 through 7.
 
-## Usage
+## Command-line options (optional)
 
-Provide paths to any compatible workbook and template:
+For repeatable or scripted runs, provide the paths directly instead of using the file pickers:
 
 ```powershell
 py .\generate_top_sheets.py --workbook "C:\path\to\students.xlsx" --template "C:\path\to\top-sheet-template.docx"

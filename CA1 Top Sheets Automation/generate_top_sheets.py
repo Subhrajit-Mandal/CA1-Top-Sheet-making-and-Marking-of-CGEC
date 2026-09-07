@@ -1,7 +1,8 @@
 """Create one completed CA1 top sheet (DOCX and PDF) for every spreadsheet row.
 
-Pass any XLSX workbook and DOCX template with --workbook and --template.
-Requires Microsoft Word on Windows for the PDF-export step.
+Run without arguments to select the XLSX workbook and DOCX template in file
+pickers, or pass their paths with --workbook and --template. Requires Microsoft
+Word on Windows for the PDF-export step.
 """
 
 from __future__ import annotations
@@ -70,6 +71,22 @@ def clean_filename(value: str) -> str:
     """Make a Windows-safe, readable filename."""
     value = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "_", value).strip(". ")
     return value or "unnamed_student"
+
+
+def choose_input_file(title: str, file_types: list[tuple[str, str]]) -> Path | None:
+    """Open a Windows file picker, with a terminal prompt as a fallback."""
+    try:
+        import tkinter as tk
+        from tkinter import filedialog
+
+        root = tk.Tk()
+        root.withdraw()
+        root.attributes("-topmost", True)
+        selected = filedialog.askopenfilename(title=title, filetypes=file_types)
+        root.destroy()
+    except Exception:
+        selected = input(f"{title} (enter its path): ").strip().strip('"')
+    return Path(selected) if selected else None
 
 
 def parse_total_mark(value: str) -> int | None:
@@ -326,20 +343,8 @@ def export_pdf_with_word(docx_path: Path, pdf_path: Path) -> None:
 def main() -> int:
     here = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--workbook",
-        type=Path,
-        required=True,
-        metavar="PATH",
-        help="Path to the source XLSX workbook.",
-    )
-    parser.add_argument(
-        "--template",
-        type=Path,
-        required=True,
-        metavar="PATH",
-        help="Path to the DOCX top-sheet template.",
-    )
+    parser.add_argument("--workbook", type=Path, metavar="PATH", help="Path to the source XLSX workbook.")
+    parser.add_argument("--template", type=Path, metavar="PATH", help="Path to the DOCX top-sheet template.")
     parser.add_argument("--sheet", help="Worksheet name; defaults to the active worksheet.")
     parser.add_argument("--output", type=Path, default=here / "output")
     parser.add_argument(
@@ -350,6 +355,17 @@ def main() -> int:
     )
     parser.add_argument("--keep-docx-only", action="store_true", help="Create DOCX files but skip PDF export.")
     args = parser.parse_args()
+
+    if args.workbook is None:
+        args.workbook = choose_input_file(
+            "Select the student workbook", [("Excel workbooks", "*.xlsx"), ("All files", "*.*")]
+        )
+    if args.template is None:
+        args.template = choose_input_file(
+            "Select the Word top-sheet template", [("Word documents", "*.docx"), ("All files", "*.*")]
+        )
+    if args.workbook is None or args.template is None:
+        parser.error("Both a workbook and a Word template must be selected.")
 
     for path, description in ((args.workbook, "workbook"), (args.template, "template")):
         if not path.is_file():
